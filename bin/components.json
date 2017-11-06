@@ -1,1 +1,1 @@
-data = '[{"width":100,"x":77,"y":27,"text":"New TextField","type":"TEXTFIELD","height":25},{"width":100,"x":88,"y":63,"text":"New Label","type":"LABEL","height":25},{"width":100,"x":75,"y":87,"text":"New button","type":"BUTTON","height":25}]';
+data = '[{"x":134,"width":100,"y":99,"text":"New button","type":"BUTTON","height":25},{"x":200,"width":100,"y":101,"text":"New button","type":"BUTTON","height":25},{"x":256,"width":100,"y":115,"text":"New button","type":"BUTTON","height":25}]';

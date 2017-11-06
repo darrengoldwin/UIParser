@@ -32,6 +32,8 @@ import com.google.gson.Gson;
 public class GUI {
 
 	private JFrame frame;
+	private JFrame buttonFrame;
+	private JFrame valuesFrame;
 	private JTextField x;
 	private JTextField y;
 	private JTextField width;
@@ -48,6 +50,8 @@ public class GUI {
 	private ActionListener changeButtonActionListener;
 	private ActionListener deleteButtonActionListener;
 	private ActionListener saveButtonActionListener;
+	private ActionListener forwardButtonActionListener;
+	private ActionListener backwardButtonActionListener;
 	private ActionListener loadButtonActionListener;
 	private MouseListener setFieldActionListener;
 	private MouseMotionListener motionListener;
@@ -59,6 +63,8 @@ public class GUI {
 	private JButton loadButton;
 	private JButton deleteButton;
 	private JButton changeButton;
+	private JButton forwardButton;
+	private JButton backwardButton;
 	
 	private Component currentComponent;
 
@@ -71,6 +77,8 @@ public class GUI {
 				try {
 					GUI window = new GUI();
 					window.frame.setVisible(true);
+					window.buttonFrame.setVisible(true);
+					window.valuesFrame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -91,32 +99,39 @@ public class GUI {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setTitle("Parser Example");
-		frame.setBounds(100, 100, 1000, 600);
+		frame.setTitle("Panel");
+		frame.setBounds(0, 0, 1366, 768);
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setFocusableWindowState(false);
+		
+		buttonFrame = new JFrame();
+		buttonFrame.setTitle("Button");
+		buttonFrame.setBounds(936, 0, 430, 70);
+		buttonFrame.setResizable(false);
+		buttonFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		buttonFrame.getContentPane().setLayout(null);
+		buttonFrame.setFocusableWindowState(false);
+		
+		valuesFrame = new JFrame();
+		valuesFrame.setTitle("Values");
+		valuesFrame.setBounds(1116, 368, 250, 350);
+		valuesFrame.setResizable(false);
+		valuesFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		valuesFrame.setFocusableWindowState(false);
+		valuesFrame.getContentPane().setLayout(null);
 		
 		panel = new JPanel();
 		panel.setBackground(Color.WHITE);
-		panel.setBounds(10, 46, 800, 520);
+		panel.setBounds(0, 0, 1366, 768);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
-		saveButton = new JButton("Save");
-		saveButton.setBounds(815, 5, 75, 30);
-		saveButton.addActionListener(saveButtonActionListener);
-		frame.getContentPane().add(saveButton);
-		
-		loadButton = new JButton("Load");
-		loadButton.setBounds(895, 5, 75, 30);
-		loadButton.addActionListener(loadButtonActionListener);
-		frame.getContentPane().add(loadButton);
-		
 		panelButton = new JPanel();
-		panelButton.setBounds(10, 5, 377, 35);
+		panelButton.setBounds(10, 5, 430, 35);
 		panelButton.setLayout(new BoxLayout(panelButton, BoxLayout.X_AXIS));
-		frame.getContentPane().add(panelButton);
+		buttonFrame.getContentPane().add(panelButton);
 		
 		button = new JButton("New Button");
 		button.addActionListener(newButtonActionListener);
@@ -130,9 +145,17 @@ public class GUI {
 		textField.addActionListener(newTextFieldActionListener);
 		panelButton.add(textField);
 		
+		saveButton = new JButton("Save");
+		saveButton.addActionListener(saveButtonActionListener);
+		panelButton.add(saveButton);
+		
+		loadButton = new JButton("Load");
+		loadButton.addActionListener(loadButtonActionListener);
+		panelButton.add(loadButton);
+		
 		panelValues = new JPanel();
-		panelValues.setBounds(830, 46, 144, 264);
-		frame.getContentPane().add(panelValues);
+		panelValues.setBounds(10, 0, 230, 320);
+		valuesFrame.getContentPane().add(panelValues);
 		panelValues.setLayout(new GridLayout(0, 1, 0, 0));
 		
 		JLabel textLbl = new JLabel("Text: ");
@@ -178,6 +201,14 @@ public class GUI {
 		deleteButton.addActionListener(deleteButtonActionListener);
 		panelValues.add(deleteButton);
 		
+		forwardButton = new JButton("Forward");
+		forwardButton.addActionListener(forwardButtonActionListener);
+		panelValues.add(forwardButton);
+		
+		backwardButton = new JButton("Backward");
+		backwardButton.addActionListener(backwardButtonActionListener);
+		panelValues.add(backwardButton);
+		
 	}
 	
 	
@@ -205,8 +236,129 @@ public class GUI {
 				// TODO Auto-generated method stub
 				
 				changeFields(currentComponent);
+				checkBounds();
 				panel.repaint();
 				panel.revalidate();
+			}
+		};
+		
+		backwardButtonActionListener = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+				Component[] components = panel.getComponents();
+				panel.removeAll();
+				for(int i =0; i< components.length; i++) {
+					System.out.println(components[i].getClass());
+					if(components[i] == currentComponent) {
+						System.out.println("a");
+						if(i+1 < components.length)
+							panel.add(components[i+1]);
+						panel.add(components[i]);
+						i++;
+					}
+					else
+						panel.add(components[i]);
+				}
+					
+				panel.repaint();
+				panel.revalidate();
+				
+			}
+		};
+		
+		forwardButtonActionListener = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				Component[] components = panel.getComponents();
+				panel.removeAll();
+				for(int i =0; i< components.length; i++) {
+					if(components[i] == currentComponent) {
+						panel.add(components[i],i-1);
+					}
+					else
+						panel.add(components[i]);
+				}
+					
+						
+				panel.repaint();
+				panel.revalidate();
+			}
+		};
+		
+		loadButtonActionListener = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+				JFileChooser fileChooser = new JFileChooser("C:\\Users\\USER\\eclipse-workspace\\ParserExample\\src\\components.json");
+				fileChooser.showOpenDialog(frame);
+				
+				try {
+					BufferedReader br = new BufferedReader(new FileReader(fileChooser.getSelectedFile()));
+					String s = br.readLine();
+					s = s.substring(8, s.length()-2);
+					System.out.println(s);
+					
+					Gson g = new Gson();
+					UI[] components = g.fromJson(s, UI[].class);
+					
+					for(int i =0; i< components.length; i++) {
+						
+						if(components[i].getType().equals("BUTTON")) {
+							JButton button = new JButton(components[i].getText());
+							button.setFont(new Font("Arial", Font.PLAIN, 13));
+							button.setBounds(components[i].getX(), components[i].getY(), components[i].getWidth(), components[i].getHeight());
+							button.setVisible(true);
+							button.setEnabled(false);
+							button.addMouseListener(setFieldActionListener);
+							button.addMouseMotionListener(motionListener);
+							setFields(button);
+							panel.add(button);
+						}
+						
+						if(components[i].getType().equals("LABEL")) {
+							JLabel label = new JLabel(components[i].getText());
+							label.setFont(new Font("Arial", Font.PLAIN, 13));
+							label.setBounds(components[i].getX(), components[i].getY(), components[i].getWidth(), components[i].getHeight());
+							label.setVisible(true);
+							label.addMouseListener(setFieldActionListener);
+							label.addMouseMotionListener(motionListener);
+							setFields(label);
+							panel.add(label);
+						}
+						
+						if(components[i].getType().equals("TEXTFIELD")) {
+							JTextField textField = new JTextField(components[i].getText());
+							textField.setFont(new Font("Arial", Font.PLAIN, 13));
+							textField.setBounds(components[i].getX(), components[i].getY(), components[i].getWidth(), components[i].getHeight());
+							textField.setVisible(true);
+							textField.setEnabled(false);
+							textField.addMouseListener(setFieldActionListener);
+							textField.addMouseMotionListener(motionListener);
+							Border border = BorderFactory.createLineBorder(new Color(212,209,208), 1);
+							textField.setBorder(border);
+							textField.setBackground(new Color(235,234,230));
+							textField.setForeground(Color.black);
+							setFields(textField);
+							panel.add(textField);
+							
+						}
+						
+					}
+					panel.repaint();
+					panel.revalidate();	
+					
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					
+				}
+				
 			}
 		};
 		
@@ -284,90 +436,9 @@ public class GUI {
 				button.addMouseListener(setFieldActionListener);
 				button.addMouseMotionListener(motionListener);
 				setFields(button);
-				panel.add(button);
+				panel.add(button, 0);
 				panel.repaint();
 				panel.revalidate();
-			}
-		};
-
-		loadButtonActionListener = new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
-				JFileChooser fileChooser = new JFileChooser("C:\\Users\\USER\\eclipse-workspace\\ParserExample\\src\\components.json");
-				fileChooser.showOpenDialog(frame);
-				
-				try {
-					
-					//byte[] jsonData = Files.readAllBytes(fileChooser.getSelectedFile().toPath());
-					BufferedReader br = new BufferedReader(new FileReader(fileChooser.getSelectedFile()));
-					String s = br.readLine();
-					s = s.substring(8, s.length()-2);
-					System.out.println(s);
-					
-					Gson g = new Gson();
-					UI[] components = g.fromJson(s, UI[].class);
-					
-					for(int i =0; i< components.length; i++) {
-						
-						if(components[i].getType().equals("BUTTON")) {
-							JButton button = new JButton(components[i].getText());
-							button.setFont(new Font("Arial", Font.PLAIN, 13));
-							button.setBounds(components[i].getX(), components[i].getY(), components[i].getWidth(), components[i].getHeight());
-							button.setVisible(true);
-							button.setEnabled(false);
-							button.addMouseListener(setFieldActionListener);
-							button.addMouseMotionListener(motionListener);
-							setFields(button);
-							panel.add(button);
-						}
-						
-						if(components[i].getType().equals("LABEL")) {
-							JLabel label = new JLabel(components[i].getText());
-							label.setFont(new Font("Arial", Font.PLAIN, 13));
-							label.setBounds(components[i].getX(), components[i].getY(), components[i].getWidth(), components[i].getHeight());
-							label.setVisible(true);
-							label.addMouseListener(setFieldActionListener);
-							label.addMouseMotionListener(motionListener);
-							setFields(label);
-							panel.add(label);
-						}
-						
-						if(components[i].getType().equals("TEXTFIELD")) {
-							JTextField textField = new JTextField(components[i].getText());
-							textField.setFont(new Font("Arial", Font.PLAIN, 13));
-							textField.setBounds(components[i].getX(), components[i].getY(), components[i].getWidth(), components[i].getHeight());
-							textField.setVisible(true);
-							textField.setEnabled(false);
-							textField.addMouseListener(setFieldActionListener);
-							textField.addMouseMotionListener(motionListener);
-							Border border = BorderFactory.createLineBorder(new Color(212,209,208), 1);
-							textField.setBorder(border);
-							textField.setBackground(new Color(235,234,230));
-							textField.setForeground(Color.black);
-							setFields(textField);
-							panel.add(textField);
-							
-						}
-						
-					}
-					panel.repaint();
-					panel.revalidate();
-				
-				
-					
-					
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					
-				}
-				
-				
-				
-				
-				
 			}
 		};
 		
@@ -384,7 +455,7 @@ public class GUI {
 				label.addMouseListener(setFieldActionListener);
 				label.addMouseMotionListener(motionListener);
 				setFields(label);
-				panel.add(label);
+				panel.add(label, 0);
 				panel.repaint();
 				panel.revalidate();
 			}
@@ -408,7 +479,7 @@ public class GUI {
 				textField.setBackground(new Color(235,234,230));
 				textField.setForeground(Color.black);
 				setFields(textField);
-				panel.add(textField);
+				panel.add(textField, 0);
 				panel.repaint();
 				panel.revalidate();
 			}
@@ -421,7 +492,7 @@ public class GUI {
 			public void mouseDragged(MouseEvent e) {
 				// TODO Auto-generated method stub
 				Component component = (Component)e.getComponent();
-				component.setBounds(e.getXOnScreen()-170, e.getYOnScreen()-180, component.getWidth(), component.getHeight());
+				component.setBounds(e.getXOnScreen()-50, e.getYOnScreen()-30, component.getWidth(), component.getHeight());
 				setFields(component);
 			}
 		};
@@ -429,38 +500,7 @@ public class GUI {
 		setFieldActionListener = new MouseListener() {
 			public void mousePressed(MouseEvent e) {}
 			public void mouseReleased(MouseEvent e) {
-				if(currentComponent.getX() > 281) {
-					if(currentComponent.getY() < 0)
-						currentComponent.setBounds(281, 0, currentComponent.getWidth(), currentComponent.getHeight());
-					else if(currentComponent.getY() > 239)
-						currentComponent.setBounds(281, 239, currentComponent.getWidth(), currentComponent.getHeight());
-					else
-						currentComponent.setBounds(281, e.getYOnScreen()-180, currentComponent.getWidth(), currentComponent.getHeight());
-				}
-				else if(currentComponent.getX() < 0){
-					if(currentComponent.getY() < 0)
-						currentComponent.setBounds(0, 0, currentComponent.getWidth(), currentComponent.getHeight());
-					else if(currentComponent.getY() > 239)
-						currentComponent.setBounds(0, 239, currentComponent.getWidth(), currentComponent.getHeight());
-					else
-						currentComponent.setBounds(0, e.getYOnScreen()-180, currentComponent.getWidth(), currentComponent.getHeight());
-				}
-				else if(currentComponent.getY() > 239){
-					if(currentComponent.getX() < 0)
-						currentComponent.setBounds(0, 239, currentComponent.getWidth(), currentComponent.getHeight());
-					else if(currentComponent.getX() > 281)
-						currentComponent.setBounds(281, 239, currentComponent.getWidth(), currentComponent.getHeight());
-					else
-						currentComponent.setBounds(e.getXOnScreen()-170, 239, currentComponent.getWidth(), currentComponent.getHeight());
-				}
-				else if(currentComponent.getY() < 0){
-					if(currentComponent.getX() < 0)
-						currentComponent.setBounds(0, 0, currentComponent.getWidth(), currentComponent.getHeight());
-					else if(currentComponent.getX() > 281)
-						currentComponent.setBounds(281, 0, currentComponent.getWidth(), currentComponent.getHeight());
-					else
-						currentComponent.setBounds(e.getXOnScreen()-170, 0, currentComponent.getWidth(), currentComponent.getHeight());
-				}
+				checkBounds();
 				setFields((Component)e.getComponent());
 			}
 			public void mouseEntered(MouseEvent e) {}
@@ -468,12 +508,26 @@ public class GUI {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				// TODO Auto-generated method stub
-				setFields((Component)e.getComponent());
-				
 			}
 			
 		};
 		
+	}
+	
+	public void checkBounds() {
+		int x = currentComponent.getX();
+		int y = currentComponent.getY();
+		if(x + currentComponent.getWidth() > 800) 
+			x = 800-currentComponent.getWidth();
+		else if(x < 0)
+			x = 0;
+		if(y + currentComponent.getHeight() > 520)
+			y =520- currentComponent.getHeight();
+		else if(y < 0){
+			y =0;
+		}
+		currentComponent.setBounds(x, y, currentComponent.getWidth(), currentComponent.getHeight());
+		setFields(currentComponent);
 	}
 	
 	public void changeFields(Component component) {
