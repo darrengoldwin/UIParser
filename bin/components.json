@@ -1,1 +1,1 @@
-data = '[{"width":100,"x":0,"y":0,"text":"New TextField","type":"TEXTFIELD","height":25}]';
+data = '[{"width":100,"x":152,"y":111,"text":"New button","type":"BUTTON","height":25},{"width":100,"x":341,"y":142,"text":"New Label","type":"LABEL","height":25},{"width":100,"x":511,"y":319,"text":"New TextField","type":"TEXTFIELD","height":25}]';
