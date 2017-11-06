@@ -328,6 +328,38 @@ public class GUI {
 		setFieldActionListener = new MouseListener() {
 			public void mousePressed(MouseEvent e) {}
 			public void mouseReleased(MouseEvent e) {
+				if(currentComponent.getX() > 281) {
+					if(currentComponent.getY() < 0)
+						currentComponent.setBounds(281, 0, currentComponent.getWidth(), currentComponent.getHeight());
+					else if(currentComponent.getY() > 239)
+						currentComponent.setBounds(281, 239, currentComponent.getWidth(), currentComponent.getHeight());
+					else
+						currentComponent.setBounds(281, e.getYOnScreen()-180, currentComponent.getWidth(), currentComponent.getHeight());
+				}
+				else if(currentComponent.getX() < 0){
+					if(currentComponent.getY() < 0)
+						currentComponent.setBounds(0, 0, currentComponent.getWidth(), currentComponent.getHeight());
+					else if(currentComponent.getY() > 239)
+						currentComponent.setBounds(0, 239, currentComponent.getWidth(), currentComponent.getHeight());
+					else
+						currentComponent.setBounds(0, e.getYOnScreen()-180, currentComponent.getWidth(), currentComponent.getHeight());
+				}
+				else if(currentComponent.getY() > 239){
+					if(currentComponent.getX() < 0)
+						currentComponent.setBounds(0, 239, currentComponent.getWidth(), currentComponent.getHeight());
+					else if(currentComponent.getX() > 281)
+						currentComponent.setBounds(281, 239, currentComponent.getWidth(), currentComponent.getHeight());
+					else
+						currentComponent.setBounds(e.getXOnScreen()-170, 239, currentComponent.getWidth(), currentComponent.getHeight());
+				}
+				else if(currentComponent.getY() < 0){
+					if(currentComponent.getX() < 0)
+						currentComponent.setBounds(0, 0, currentComponent.getWidth(), currentComponent.getHeight());
+					else if(currentComponent.getX() > 281)
+						currentComponent.setBounds(281, 0, currentComponent.getWidth(), currentComponent.getHeight());
+					else
+						currentComponent.setBounds(e.getXOnScreen()-170, 0, currentComponent.getWidth(), currentComponent.getHeight());
+				}
 				setFields((Component)e.getComponent());
 			}
 			public void mouseEntered(MouseEvent e) {}
