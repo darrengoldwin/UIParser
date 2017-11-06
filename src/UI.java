@@ -1,5 +1,3 @@
-import javax.swing.JComponent;
-
 public class UI{
 
 	private int x;

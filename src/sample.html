@@ -7,15 +7,17 @@
 			font-size: 13;
 
 		}
+		
+		input, select, textarea{
+			color: #C7CFDC;
+		}
 
 	</style>
 	
 	<script type="text/javascript" src="components.json"></script>
-	
-	
+		
 	<body>
 	<script>
-		console.log("A");
 		var mydata = JSON.parse(data);
 		console.log(mydata.length);
 		
@@ -24,9 +26,9 @@
 			var comp = null;
 			if(component.type == "BUTTON") {
 				console.log("BUTTON");
-				comp = document.createElement("BUTTON");
-				var t = document.createTextNode(component.text);       
-				comp.appendChild(t);
+				comp = document.createElement("INPUT");
+				comp.type ="submit";
+				comp.value=component.text;
 				comp.disabled =true;
 			}
 			else if(component.type == "LABEL") {

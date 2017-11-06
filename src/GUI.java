@@ -8,19 +8,26 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
+
+import com.google.gson.Gson;
+
 
 public class GUI {
 
@@ -41,6 +48,7 @@ public class GUI {
 	private ActionListener changeButtonActionListener;
 	private ActionListener deleteButtonActionListener;
 	private ActionListener saveButtonActionListener;
+	private ActionListener loadButtonActionListener;
 	private MouseListener setFieldActionListener;
 	private MouseMotionListener motionListener;
 	
@@ -48,6 +56,7 @@ public class GUI {
 	private JButton label;
 	private JButton textField;
 	private JButton saveButton;
+	private JButton loadButton;
 	private JButton deleteButton;
 	private JButton changeButton;
 	
@@ -83,24 +92,29 @@ public class GUI {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setTitle("Parser Example");
-		frame.setBounds(100, 100, 611, 378);
+		frame.setBounds(100, 100, 1000, 600);
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		panel = new JPanel();
 		panel.setBackground(Color.WHITE);
-		panel.setBounds(23, 46, 381, 264);
+		panel.setBounds(10, 46, 800, 520);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
 		saveButton = new JButton("Save");
-		saveButton.setBounds(489, 5, 75, 30);
+		saveButton.setBounds(815, 5, 75, 30);
 		saveButton.addActionListener(saveButtonActionListener);
 		frame.getContentPane().add(saveButton);
 		
+		loadButton = new JButton("Load");
+		loadButton.setBounds(895, 5, 75, 30);
+		loadButton.addActionListener(loadButtonActionListener);
+		frame.getContentPane().add(loadButton);
+		
 		panelButton = new JPanel();
-		panelButton.setBounds(27, 5, 377, 35);
+		panelButton.setBounds(10, 5, 377, 35);
 		panelButton.setLayout(new BoxLayout(panelButton, BoxLayout.X_AXIS));
 		frame.getContentPane().add(panelButton);
 		
@@ -117,7 +131,7 @@ public class GUI {
 		panelButton.add(textField);
 		
 		panelValues = new JPanel();
-		panelValues.setBounds(441, 46, 144, 264);
+		panelValues.setBounds(830, 46, 144, 264);
 		frame.getContentPane().add(panelValues);
 		panelValues.setLayout(new GridLayout(0, 1, 0, 0));
 		
@@ -198,9 +212,12 @@ public class GUI {
 		
 		saveButtonActionListener = new ActionListener() {
 			
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				panel.repaint();
+				panel.revalidate();
 				
 				UI[] components = new UI[panel.getComponentCount()];
 				for(int i =0; i< panel.getComponentCount(); i++) {
@@ -230,10 +247,9 @@ public class GUI {
 					
 				}
 				JSONArray array = new JSONArray(components);
+				//File f = new File("C:\\Users\\Torrigan\\workspace\\UIParser\\src\\components.json");
 				File f = new File("C:\\Users\\USER\\eclipse-workspace\\ParserExample\\src\\components.json");
 				
-				//System.out.println(array.toString());
-				//File f = new File("C:\\Users\\USER\\eclipse-workspace\\ParserExample\\sample.html");
 				
 				
 				try{
@@ -273,6 +289,87 @@ public class GUI {
 				panel.revalidate();
 			}
 		};
+
+		loadButtonActionListener = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+				JFileChooser fileChooser = new JFileChooser("C:\\Users\\USER\\eclipse-workspace\\ParserExample\\src\\components.json");
+				fileChooser.showOpenDialog(frame);
+				
+				try {
+					
+					//byte[] jsonData = Files.readAllBytes(fileChooser.getSelectedFile().toPath());
+					BufferedReader br = new BufferedReader(new FileReader(fileChooser.getSelectedFile()));
+					String s = br.readLine();
+					s = s.substring(8, s.length()-2);
+					System.out.println(s);
+					
+					Gson g = new Gson();
+					UI[] components = g.fromJson(s, UI[].class);
+					
+					for(int i =0; i< components.length; i++) {
+						
+						if(components[i].getType().equals("BUTTON")) {
+							JButton button = new JButton(components[i].getText());
+							button.setFont(new Font("Arial", Font.PLAIN, 13));
+							button.setBounds(components[i].getX(), components[i].getY(), components[i].getWidth(), components[i].getHeight());
+							button.setVisible(true);
+							button.setEnabled(false);
+							button.addMouseListener(setFieldActionListener);
+							button.addMouseMotionListener(motionListener);
+							setFields(button);
+							panel.add(button);
+						}
+						
+						if(components[i].getType().equals("LABEL")) {
+							JLabel label = new JLabel(components[i].getText());
+							label.setFont(new Font("Arial", Font.PLAIN, 13));
+							label.setBounds(components[i].getX(), components[i].getY(), components[i].getWidth(), components[i].getHeight());
+							label.setVisible(true);
+							label.addMouseListener(setFieldActionListener);
+							label.addMouseMotionListener(motionListener);
+							setFields(label);
+							panel.add(label);
+						}
+						
+						if(components[i].getType().equals("TEXTFIELD")) {
+							JTextField textField = new JTextField(components[i].getText());
+							textField.setFont(new Font("Arial", Font.PLAIN, 13));
+							textField.setBounds(components[i].getX(), components[i].getY(), components[i].getWidth(), components[i].getHeight());
+							textField.setVisible(true);
+							textField.setEnabled(false);
+							textField.addMouseListener(setFieldActionListener);
+							textField.addMouseMotionListener(motionListener);
+							Border border = BorderFactory.createLineBorder(new Color(212,209,208), 1);
+							textField.setBorder(border);
+							textField.setBackground(new Color(235,234,230));
+							textField.setForeground(Color.black);
+							setFields(textField);
+							panel.add(textField);
+							
+						}
+						
+					}
+					panel.repaint();
+					panel.revalidate();
+				
+				
+					
+					
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					
+				}
+				
+				
+				
+				
+				
+			}
+		};
 		
 		newLabelActionListener = new ActionListener() {
 			
@@ -306,6 +403,10 @@ public class GUI {
 				textField.setEnabled(false);
 				textField.addMouseListener(setFieldActionListener);
 				textField.addMouseMotionListener(motionListener);
+				Border border = BorderFactory.createLineBorder(new Color(212,209,208), 1);
+				textField.setBorder(border);
+				textField.setBackground(new Color(235,234,230));
+				textField.setForeground(Color.black);
 				setFields(textField);
 				panel.add(textField);
 				panel.repaint();
