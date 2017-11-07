@@ -112,14 +112,12 @@ public class GUI {
 		buttonFrame.setResizable(false);
 		buttonFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		buttonFrame.getContentPane().setLayout(null);
-		buttonFrame.setFocusableWindowState(false);
 		
 		valuesFrame = new JFrame();
 		valuesFrame.setTitle("Values");
 		valuesFrame.setBounds(1116, 368, 250, 350);
 		valuesFrame.setResizable(false);
 		valuesFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		valuesFrame.setFocusableWindowState(false);
 		valuesFrame.getContentPane().setLayout(null);
 		
 		panel = new JPanel();
