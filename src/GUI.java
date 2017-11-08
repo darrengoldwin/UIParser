@@ -122,7 +122,7 @@ public class GUI {
 		
 		panel = new JPanel();
 		panel.setBackground(Color.WHITE);
-		panel.setBounds(0, 0, 1366, 768);
+		panel.setBounds(0, 0, 1366, 738);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
@@ -515,12 +515,12 @@ public class GUI {
 	public void checkBounds() {
 		int x = currentComponent.getX();
 		int y = currentComponent.getY();
-		if(x + currentComponent.getWidth() > 800) 
-			x = 800-currentComponent.getWidth();
+		if(x + currentComponent.getWidth() > panel.getWidth()) 
+			x = panel.getWidth()-currentComponent.getWidth();
 		else if(x < 0)
 			x = 0;
-		if(y + currentComponent.getHeight() > 520)
-			y =520- currentComponent.getHeight();
+		if(y + currentComponent.getHeight() > panel.getHeight())
+			y =panel.getHeight()- currentComponent.getHeight();
 		else if(y < 0){
 			y =0;
 		}
