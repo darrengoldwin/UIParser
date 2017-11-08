@@ -41,7 +41,6 @@ public class GUI {
 	private JTextField text;
 	
 	private JPanel panel;
-	private JPanel panelButton;
 	private JPanel panelValues;
 	
 	private ActionListener newButtonActionListener;
@@ -77,8 +76,6 @@ public class GUI {
 				try {
 					GUI window = new GUI();
 					window.frame.setVisible(true);
-					window.buttonFrame.setVisible(true);
-					window.valuesFrame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -104,108 +101,106 @@ public class GUI {
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		frame.setFocusableWindowState(false);
-		
-		buttonFrame = new JFrame();
-		buttonFrame.setTitle("Button");
-		buttonFrame.setBounds(936, 0, 430, 70);
-		buttonFrame.setResizable(false);
-		buttonFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		buttonFrame.getContentPane().setLayout(null);
-		
-		valuesFrame = new JFrame();
-		valuesFrame.setTitle("Values");
-		valuesFrame.setBounds(1116, 368, 250, 350);
-		valuesFrame.setResizable(false);
-		valuesFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		valuesFrame.getContentPane().setLayout(null);
-		
 		panel = new JPanel();
 		panel.setBackground(Color.WHITE);
-		panel.setBounds(0, 0, 1366, 738);
+		panel.setBounds(0, 110, 1366, 658);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
-		panelButton = new JPanel();
-		panelButton.setBounds(10, 5, 430, 35);
-		panelButton.setLayout(new BoxLayout(panelButton, BoxLayout.X_AXIS));
-		buttonFrame.getContentPane().add(panelButton);
-		
-		button = new JButton("New Button");
-		button.addActionListener(newButtonActionListener);
-		panelButton.add(button);
-		
-		label = new JButton("New Label");
-		label.addActionListener(newLabelActionListener);
-		panelButton.add(label);
-		
-		textField = new JButton("New Text");
-		textField.addActionListener(newTextFieldActionListener);
-		panelButton.add(textField);
-		
-		saveButton = new JButton("Save");
-		saveButton.addActionListener(saveButtonActionListener);
-		panelButton.add(saveButton);
-		
-		loadButton = new JButton("Load");
-		loadButton.addActionListener(loadButtonActionListener);
-		panelButton.add(loadButton);
-		
 		panelValues = new JPanel();
-		panelValues.setBounds(10, 0, 230, 320);
-		valuesFrame.getContentPane().add(panelValues);
-		panelValues.setLayout(new GridLayout(0, 1, 0, 0));
+		panelValues.setBounds(0, 0, 1350, 112);
+		frame.getContentPane().add(panelValues);
+		panelValues.setLayout(null);
+		
+		changeButton = new JButton("Change");
+		changeButton.setBounds(804, 10, 100, 25);
+		panelValues.add(changeButton);
+		
+		forwardButton = new JButton("Forward");
+		forwardButton.setBounds(804, 35, 100, 25);
+		panelValues.add(forwardButton);
+		
+		backwardButton = new JButton("Backward");
+		backwardButton.setBounds(804, 60, 100, 25);
+		panelValues.add(backwardButton);
+		
+		deleteButton = new JButton("Delete");
+		deleteButton.setBounds(804, 85, 100, 25);
+		panelValues.add(deleteButton);
 		
 		JLabel textLbl = new JLabel("Text: ");
+		textLbl.setBounds(604, 10, 62, 20);
 		panelValues.add(textLbl);
 		
 		text = new JTextField();
+		text.setBounds(666, 10, 126, 20);
 		panelValues.add(text);
 		text.setColumns(10);
 		
 		JLabel xLbl = new JLabel("X: ");
+		xLbl.setBounds(604, 30, 62, 20);
 		panelValues.add(xLbl);
 		
 		x = new JTextField();
+		x.setBounds(666, 30, 126, 20);
 		panelValues.add(x);
 		x.setColumns(10);
 		
 		JLabel yLbl = new JLabel("Y: ");
+		yLbl.setBounds(604, 50, 62, 20);
 		panelValues.add(yLbl);
 		
 		y = new JTextField();
+		y.setBounds(666, 50, 126, 20);
 		panelValues.add(y);
 		y.setColumns(10);
 		
 		JLabel widthLbl = new JLabel("Width: ");
+		widthLbl.setBounds(604, 70, 62, 20);
 		panelValues.add(widthLbl);
 		
 		width = new JTextField();
+		width.setBounds(666, 70, 126, 20);
 		panelValues.add(width);
 		width.setColumns(10);
 		
 		JLabel heightLbl = new JLabel("Height: ");
+		heightLbl.setBounds(604, 90, 62, 20);
 		panelValues.add(heightLbl);
 		
 		height = new JTextField();
+		height.setBounds(666, 90, 126, 20);
 		panelValues.add(height);
 		height.setColumns(10);
 		
-		changeButton = new JButton("Change");
-		changeButton.addActionListener(changeButtonActionListener);
-		panelValues.add(changeButton);
+		button = new JButton("New Button");
+		button.setBounds(10, 36, 126, 23);
+		panelValues.add(button);
 		
-		deleteButton = new JButton("Delete");
+		textField = new JButton("New Text");
+		textField.setBounds(10, 61, 126, 23);
+		panelValues.add(textField);
+		
+		label = new JButton("New Label");
+		label.setBounds(10, 11, 126, 23);
+		panelValues.add(label);
+		
+		loadButton = new JButton("Load");
+		loadButton.setBounds(174, 36, 132, 23);
+		panelValues.add(loadButton);
+		
+		saveButton = new JButton("Save");
+		saveButton.setBounds(174, 11, 132, 23);
+		panelValues.add(saveButton);
+		saveButton.addActionListener(saveButtonActionListener);
+		loadButton.addActionListener(loadButtonActionListener);
+		label.addActionListener(newLabelActionListener);
+		textField.addActionListener(newTextFieldActionListener);
+		button.addActionListener(newButtonActionListener);
 		deleteButton.addActionListener(deleteButtonActionListener);
-		panelValues.add(deleteButton);
-		
-		forwardButton = new JButton("Forward");
-		forwardButton.addActionListener(forwardButtonActionListener);
-		panelValues.add(forwardButton);
-		
-		backwardButton = new JButton("Backward");
 		backwardButton.addActionListener(backwardButtonActionListener);
-		panelValues.add(backwardButton);
+		forwardButton.addActionListener(forwardButtonActionListener);
+		changeButton.addActionListener(changeButtonActionListener);
 		
 	}
 	
