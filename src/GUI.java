@@ -101,9 +101,10 @@ public class GUI {
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		
 		panel = new JPanel();
 		panel.setBackground(Color.WHITE);
-		panel.setBounds(0, 110, 1366, 658);
+		panel.setBounds(0, 100, 1366, 637);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
@@ -113,63 +114,63 @@ public class GUI {
 		panelValues.setLayout(null);
 		
 		changeButton = new JButton("Change");
-		changeButton.setBounds(804, 10, 100, 25);
+		changeButton.setBounds(803, 0, 100, 25);
 		panelValues.add(changeButton);
 		
 		forwardButton = new JButton("Forward");
-		forwardButton.setBounds(804, 35, 100, 25);
+		forwardButton.setBounds(803, 25, 100, 25);
 		panelValues.add(forwardButton);
 		
 		backwardButton = new JButton("Backward");
-		backwardButton.setBounds(804, 60, 100, 25);
+		backwardButton.setBounds(803, 50, 100, 25);
 		panelValues.add(backwardButton);
 		
 		deleteButton = new JButton("Delete");
-		deleteButton.setBounds(804, 85, 100, 25);
+		deleteButton.setBounds(803, 75, 100, 25);
 		panelValues.add(deleteButton);
 		
 		JLabel textLbl = new JLabel("Text: ");
-		textLbl.setBounds(604, 10, 62, 20);
+		textLbl.setBounds(603, 0, 62, 20);
 		panelValues.add(textLbl);
 		
 		text = new JTextField();
-		text.setBounds(666, 10, 126, 20);
+		text.setBounds(665, 0, 126, 20);
 		panelValues.add(text);
 		text.setColumns(10);
 		
 		JLabel xLbl = new JLabel("X: ");
-		xLbl.setBounds(604, 30, 62, 20);
+		xLbl.setBounds(603, 20, 62, 20);
 		panelValues.add(xLbl);
 		
 		x = new JTextField();
-		x.setBounds(666, 30, 126, 20);
+		x.setBounds(665, 20, 126, 20);
 		panelValues.add(x);
 		x.setColumns(10);
 		
 		JLabel yLbl = new JLabel("Y: ");
-		yLbl.setBounds(604, 50, 62, 20);
+		yLbl.setBounds(603, 40, 62, 20);
 		panelValues.add(yLbl);
 		
 		y = new JTextField();
-		y.setBounds(666, 50, 126, 20);
+		y.setBounds(665, 40, 126, 20);
 		panelValues.add(y);
 		y.setColumns(10);
 		
 		JLabel widthLbl = new JLabel("Width: ");
-		widthLbl.setBounds(604, 70, 62, 20);
+		widthLbl.setBounds(603, 60, 62, 20);
 		panelValues.add(widthLbl);
 		
 		width = new JTextField();
-		width.setBounds(666, 70, 126, 20);
+		width.setBounds(665, 60, 126, 20);
 		panelValues.add(width);
 		width.setColumns(10);
 		
 		JLabel heightLbl = new JLabel("Height: ");
-		heightLbl.setBounds(604, 90, 62, 20);
+		heightLbl.setBounds(603, 80, 62, 20);
 		panelValues.add(heightLbl);
 		
 		height = new JTextField();
-		height.setBounds(666, 90, 126, 20);
+		height.setBounds(665, 80, 126, 20);
 		panelValues.add(height);
 		height.setColumns(10);
 		
@@ -289,6 +290,7 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				
+				panel.removeAll();
 				JFileChooser fileChooser = new JFileChooser("C:\\Users\\USER\\eclipse-workspace\\ParserExample\\src\\components.json");
 				fileChooser.showOpenDialog(frame);
 				
@@ -317,7 +319,7 @@ public class GUI {
 						
 						if(components[i].getType().equals("LABEL")) {
 							JLabel label = new JLabel(components[i].getText());
-							label.setFont(new Font("Arial", Font.PLAIN, 13));
+							label.setFont(new Font("Arial", Font.PLAIN, 12));
 							label.setBounds(components[i].getX(), components[i].getY(), components[i].getWidth(), components[i].getHeight());
 							label.setVisible(true);
 							label.addMouseListener(setFieldActionListener);
@@ -365,7 +367,7 @@ public class GUI {
 				panel.revalidate();
 				
 				UI[] components = new UI[panel.getComponentCount()];
-				for(int i =0; i< panel.getComponentCount(); i++) {
+				for(int i =0; i < components.length; i++) {
 					String text = null;
 					String type = null;
 					if(JButton.class.equals(panel.getComponent(i).getClass())) {
@@ -393,12 +395,14 @@ public class GUI {
 				}
 				JSONArray array = new JSONArray(components);
 				//File f = new File("C:\\Users\\Torrigan\\workspace\\UIParser\\src\\components.json");
-				File f = new File("C:\\Users\\USER\\eclipse-workspace\\ParserExample\\src\\components.json");
+				JFileChooser fileChooser = new JFileChooser("C:\\Users\\USER\\eclipse-workspace\\ParserExample\\src\\components.json");
+				fileChooser.showOpenDialog(frame);
 				
+				//File f = new File("C:\\Users\\USER\\eclipse-workspace\\ParserExample\\src\\components.json");
+				File f = fileChooser.getSelectedFile();
 				
 				
 				try{
-					
 					BufferedWriter bw = new BufferedWriter(new FileWriter(f));
 					bw.write("data = '");
 					bw.write(array.toString());
@@ -442,7 +446,7 @@ public class GUI {
 				// TODO Auto-generated method stub
 				
 				JLabel label = new JLabel("New Label");
-				label.setFont(new Font("Arial", Font.PLAIN, 13));
+				label.setFont(new Font("Arial", Font.PLAIN, 12));
 				label.setBounds(0, 0, 100, 25);
 				label.setVisible(true);
 				label.addMouseListener(setFieldActionListener);
@@ -485,7 +489,7 @@ public class GUI {
 			public void mouseDragged(MouseEvent e) {
 				// TODO Auto-generated method stub
 				Component component = (Component)e.getComponent();
-				component.setBounds(e.getXOnScreen()-50, e.getYOnScreen()-30, component.getWidth(), component.getHeight());
+				component.setBounds(e.getXOnScreen()-50, e.getYOnScreen()-140, component.getWidth(), component.getHeight());
 				setFields(component);
 			}
 		};
@@ -510,6 +514,7 @@ public class GUI {
 	public void checkBounds() {
 		int x = currentComponent.getX();
 		int y = currentComponent.getY();
+		
 		if(x + currentComponent.getWidth() > panel.getWidth()) 
 			x = panel.getWidth()-currentComponent.getWidth();
 		else if(x < 0)
